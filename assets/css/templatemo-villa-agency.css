@@ -31,6 +31,31 @@ font & reset css
 reset
 --------------------------------------------- 
 */
+
+@media (max-width: 768px) {
+    .header-area {
+        position: fixed;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.95); /* 반투명 배경 */
+        z-index: 999;
+    }
+
+    .header-area .main-nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .header-area .main-nav ul.nav {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+        background: white; /* 배경색을 흰색으로 설정 */
+        border-radius: 10px;
+   
+
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, div
 pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q,
 s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li,
