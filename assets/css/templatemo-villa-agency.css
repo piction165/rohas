@@ -1727,6 +1727,65 @@ body {
   overflow-x: hidden;
 }
 
+@media (max-width: 768px) {
+    body {
+        font-size: 14px; /* 기본 글씨 크기 축소 */
+    }
+
+    h1 {
+        font-size: 24px; /* 모바일에서 제목 크기 조정 */
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    .main-banner .item h2 {
+        font-size: 36px; /* 배너 텍스트 크기 조정 */
+        line-height: 44px;
+    }
+
+    .main-banner .item h3 {
+        font-size: 16px;
+    }
+
+    .main-banner .item span.category {
+        font-size: 14px;
+        padding: 4px 10px;
+    }
+
+    .header-area .main-nav ul.nav {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 12px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    .main-banner .item h2 {
+        font-size: 28px;
+        line-height: 36px;
+    }
+
+    .main-banner .item h3 {
+        font-size: 14px;
+    }
+}
+
 @media (max-width: 767px) {
   .header-area .main-nav .logo h1 {
     line-height: 80px !important;
