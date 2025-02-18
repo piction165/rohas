@@ -660,14 +660,31 @@ Header Style
     left: 30px;
     top: 15px;
   }
+  .background-header .main-nav .logo {
+    top: 0px;
+  }
+
+  /* 기본 로고 스타일 */
+.header-area .main-nav .logo img {
+  height: auto;
+  max-height: 80px; /* 기본 크기 설정 */
+  width: auto;
+}
+
+/* 모바일 화면에서 로고 크기 줄이기 */
+@media (max-width: 768px) {
   .header-area .main-nav .logo img {
     max-height: 50px; /* 모바일에서 크기 줄이기 */
     width: auto;
   }
+}
 
-  .background-header .main-nav .logo {
-    top: 0px;
+/* 더 작은 화면(예: 480px 이하)에서 로고 크기 더 줄이기 */
+@media (max-width: 480px) {
+  .header-area .main-nav .logo img {
+    max-height: 40px;
   }
+}
   .background-header .main-nav .border-button {
     top: 0px !important;
   }
