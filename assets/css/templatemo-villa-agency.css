@@ -803,6 +803,11 @@ Banner Style
   width: 50%;
   margin-bottom: 0px;
 }
+/* 배너 텍스트 색상 수정 */
+.main-banner .item h3 {
+  color: #ffffff; /* 글씨를 흰색으로 변경 */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 가독성을 위한 그림자 추가 */
+}
 
 .main-banner .owl-dots {
   position: absolute;
