@@ -667,7 +667,7 @@ Header Style
   /* 기본 로고 스타일 */
 .header-area .main-nav .logo img {
   height: auto;
-  max-height: 80px; /* 기본 크기 설정 */
+  max-height: 60px; /* 기본 크기 설정 */
   width: auto;
 }
 
