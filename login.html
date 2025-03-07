@@ -37,39 +37,37 @@
     </form>
   </div>
 
-  <script>
-    document.getElementById("register-form").addEventListener("submit", async function(event) {
-      event.preventDefault(); // 기본 폼 제출 방지
+<script>
+  document.getElementById("login-form").addEventListener("submit", async function(event) {
+    event.preventDefault(); // 기본 폼 제출 방지
 
-      const username = document.getElementById("username").value;
-      const email = document.getElementById("email").value;
-      const phoneNumber = document.getElementById("phoneNumber").value;
-      const password = document.getElementById("password").value;
-      const confirmPassword = document.getElementById("confirm-password").value;
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-      if (password !== confirmPassword) {
-        alert("비밀번호가 일치하지 않습니다.");
-        return;
-      }
-
-      const response = await fetch("http://localhost:5000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, phoneNumber, password })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // 승인 대기 메시지를 sessionStorage에 저장
-        sessionStorage.setItem("approvalMessage", "회원가입 신청이 완료되었습니다! 관리자 승인 후 로그인 가능합니다.");
-        
-        // 로그인 페이지로 이동
-        window.location.href = "login.html";
-      } else {
-        alert(data.message || "회원가입 실패");
-      }
+    const response = await fetch("http://localhost:5000/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
     });
-  </script>
+
+    const data = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem("token", data.token); // JWT 토큰 저장
+      localStorage.setItem("role", data.role); // 사용자 역할 저장
+      alert("로그인 성공!");
+
+      if (data.role === "admin") {
+        window.location.href = "admin.html"; // 관리자 페이지 이동
+      } else {
+        window.location.href = "index.html"; // 일반 사용자 메인 페이지 이동
+      }
+    } else {
+      alert(data.message || "로그인 실패");
+    }
+  });
+</script>
+
+  
 </body>
 </html>
