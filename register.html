@@ -8,22 +8,26 @@
 </head>
 <body>
   <div class="wrapper">
-    <form action="#">
+    <form id="register-form">
       <h2>Register</h2>
       <div class="input-field">
-        <input type="text" required>
+        <input type="text" id="username" required>
         <label>Enter your username</label>
       </div>
       <div class="input-field">
-        <input type="email" required>
-        <label>Enter your email</label>
+        <input type="email" id="email">
+        <label>Enter your email (optional)</label>
       </div>
       <div class="input-field">
-        <input type="password" required>
+        <input type="text" id="phoneNumber" required>
+        <label>Enter your phone number</label>
+      </div>
+      <div class="input-field">
+        <input type="password" id="password" required>
         <label>Create a password</label>
       </div>
       <div class="input-field">
-        <input type="password" required>
+        <input type="password" id="confirm-password" required>
         <label>Confirm password</label>
       </div>
       <button type="submit">Register</button>
@@ -32,5 +36,37 @@
       </div>
     </form>
   </div>
+
+  <script>
+    document.getElementById("register-form").addEventListener("submit", async function(event) {
+      event.preventDefault(); // 기본 폼 제출 방지
+
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const phoneNumber = document.getElementById("phoneNumber").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+
+      if (password !== confirmPassword) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+      }
+
+      const response = await fetch("http://localhost:5000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, phoneNumber, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("회원가입 신청이 완료되었습니다! 관리자 승인 후 로그인 가능합니다.");
+        window.location.href = "login.html";
+      } else {
+        alert(data.message || "회원가입 실패");
+      }
+    });
+  </script>
 </body>
 </html>
