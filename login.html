@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+<!-- Coding By CodingNepal - www.codingnepalweb.com -->
 <html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>로그인</title>
+  <title>로그인 | MyApp</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,14 +12,24 @@
     <form id="login-form">
       <h2>로그인</h2>
       <div class="input-field">
-        <input type="text" id="phoneNumber" required>
-        <label>전화번호 입력</label>
+        <input type="text" id="username" required>
+        <label>아이디 입력</label>
       </div>
       <div class="input-field">
         <input type="password" id="password" required>
         <label>비밀번호 입력</label>
       </div>
+      <div class="forget">
+        <label for="remember">
+          <input type="checkbox" id="remember">
+          <p>로그인 상태 유지</p>
+        </label>
+        <a href="forgot-password.html">비밀번호를 까먹으셨나요?</a>
+      </div>
       <button type="submit">로그인</button>
+      <div class="register">
+        <p>계정이 없으신가요? <a href="register.html">회원가입</a></p>
+      </div>
     </form>
   </div>
 
@@ -26,13 +37,13 @@
     document.getElementById("login-form").addEventListener("submit", async function(event) {
       event.preventDefault(); // 기본 폼 제출 방지
 
-      const phoneNumber = document.getElementById("phoneNumber").value;
+      const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
 
       const response = await fetch("http://localhost:5000/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phoneNumber, password })
+        body: JSON.stringify({ username, password })
       });
 
       const data = await response.json();
