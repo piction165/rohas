@@ -6,14 +6,14 @@ const User = require("../models/User");
 const router = express.Router();
 
 // ✅ 회사 이메일 설정 (여기에 회사 이메일 주소 입력)
-const ADMIN_EMAIL = "company@example.com";
+const ADMIN_EMAIL = "piction165@eyonsei.ac.kr";
 
 // ✅ Nodemailer 이메일 설정
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "your-email@gmail.com", // 발신자 이메일 (Gmail 사용 가능)
-    pass: "your-email-password", // 앱 비밀번호 (보안 설정 필요)
+    user: "piction165@eyonsei.ac.kr", // 발신자 이메일 (Gmail 사용 가능)
+    pass: "Plaes165!", // 앱 비밀번호 (보안 설정 필요)
   },
 });
 router.post("/login", async (req, res) => {
