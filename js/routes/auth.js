@@ -5,8 +5,20 @@ const User = require("../models/User");
 
 const router = express.Router();
 
+// ✅ 승인 대기 중인 가입자 목록 조회 API (관리자만 접근 가능)
+router.get("/pending-users", authMiddleware, async (req, res) => {
+  try {
+    // 승인되지 않은 사용자 조회
+    const pendingUsers = await User.find({ isApproved: false }).select("-password");
+    res.json(pendingUsers);
+  } catch (error) {
+    res.status(500).json({ error: "승인 대기 사용자 목록 조회 실패" });
+  }
+});
+
 // ✅ 회사 이메일 설정 (여기에 회사 이메일 주소 입력)
 const ADMIN_EMAIL = "piction165@eyonsei.ac.kr";
+
 
 // ✅ Nodemailer 이메일 설정
 const transporter = nodemailer.createTransport({
