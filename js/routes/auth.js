@@ -16,6 +16,24 @@ router.get("/pending-users", authMiddleware, async (req, res) => {
   }
 });
 
+// ✅ 관리자 회원 승인 API (관리자만 접근 가능)
+router.put("/approve/:id", authMiddleware, async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
+
+    user.isApproved = true;
+    await user.save();
+
+    res.json({ message: "사용자 승인 완료!" });
+  } catch (error) {
+    res.status(500).json({ error: "회원 승인 처리 실패" });
+  }
+});
+
+
 // ✅ 회사 이메일 설정 (여기에 회사 이메일 주소 입력)
 const ADMIN_EMAIL = "piction165@eyonsei.ac.kr";
 
