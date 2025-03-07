@@ -16,6 +16,31 @@ const transporter = nodemailer.createTransport({
     pass: "your-email-password", // 앱 비밀번호 (보안 설정 필요)
   },
 });
+router.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+
+    if (!user) return res.status(404).json({ message: "아이디가 존재하지 않습니다." });
+
+    // ✅ 승인 여부 확인
+    if (!user.isApproved) {
+      return res.status(403).json({ message: "관리자 승인 대기 중입니다. 승인 후 로그인 가능합니다." });
+    }
+
+    // 비밀번호 확인
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "비밀번호가 올바르지 않습니다." });
+
+    // JWT 토큰 생성
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    res.json({ token, userId: user._id, username: user.username });
+  } catch (error) {
+    res.status(500).json({ error: "로그인 실패" });
+  }
+});
+
 
 // ✅ 회원가입 요청 (관리자 승인 대기)
 router.post("/register", async (req, res) => {
@@ -59,4 +84,5 @@ router.post("/register", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: "회원가입 요청 실패" });
   }
+  
 });
