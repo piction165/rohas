@@ -5,6 +5,32 @@ const User = require("../models/User");
 
 const router = express.Router();
 
+
+// ✅ 로그인 API (관리자 & 일반 사용자 구분)
+router.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+
+    if (!user) return res.status(404).json({ message: "아이디가 존재하지 않습니다." });
+
+    // ✅ 일반 사용자는 승인 여부 확인
+    if (user.role !== "admin" && !user.isApproved) {
+      return res.status(403).json({ message: "관리자 승인 대기 중입니다. 승인 후 로그인 가능합니다." });
+    }
+
+    // 비밀번호 확인
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ message: "비밀번호가 올바르지 않습니다." });
+
+    // ✅ JWT 토큰 생성 (role 포함)
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    res.json({ token, userId: user._id, username: user.username, role: user.role });
+  } catch (error) {
+    res.status(500).json({ error: "로그인 실패" });
+  }
+  
 // ✅ 승인 대기 중인 가입자 목록 조회 API (관리자만 접근 가능)
 router.get("/pending-users", authMiddleware, async (req, res) => {
   try {
