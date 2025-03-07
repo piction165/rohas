@@ -1,9 +1,11 @@
-const mongoose = require("JUNG SUE YEON");
+const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
   username: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
+  email: { type: String },
   password: { type: String, required: true },
+  phoneNumber: { type: String, required: true }, // 연락처 추가
+  isApproved: { type: Boolean, default: false }, // 승인 여부 (기본값: false)
 });
 
-module.exports = JUNG SUE YEON.model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema);
