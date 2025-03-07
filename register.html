@@ -61,7 +61,10 @@
       const data = await response.json();
 
       if (response.ok) {
-        alert("회원가입 신청이 완료되었습니다! 관리자 승인 후 로그인 가능합니다.");
+        // 세션 스토리지에 승인 대기 메시지 저장
+        sessionStorage.setItem("approvalMessage", "회원가입 신청이 완료되었습니다! 관리자 승인 후 로그인 가능합니다.");
+        
+        // 로그인 페이지로 이동
         window.location.href = "login.html";
       } else {
         alert(data.message || "회원가입 실패");
