@@ -9,19 +9,20 @@ const router = express.Router();
 // ✅ 회원가입 API
 router.post("/register", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, phoneNumber } = req.body;
 
-    // 이메일 중복 체크
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: "이미 가입된 이메일입니다." });
+    // 이메일 또는 연락처 중복 확인
+    const existingUser = await User.findOne({ phoneNumber });
+    if (existingUser) return res.status(400).json({ message: "이미 등록된 전화번호입니다." });
 
     // 비밀번호 암호화
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new User({ username, email, password: hashedPassword });
+    // 승인 대기 상태로 사용자 저장
+    const newUser = new User({ username, email, password: hashedPassword, phoneNumber });
     await newUser.save();
 
-    res.status(201).json({ message: "회원가입 성공!" });
+    res.status(201).json({ message: "회원가입 완료! 관리자의 승인을 기다려주세요." });
   } catch (error) {
     res.status(500).json({ error: "회원가입 실패" });
   }
