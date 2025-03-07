@@ -1,59 +1,73 @@
 <!DOCTYPE html>
-<!-- Coding By CodingNepal - www.codingnepalweb.com -->
 <html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>로그인 | MyApp</title>
+  <title>Register | Glassmorphism</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="wrapper">
-    <form id="login-form">
-      <h2>로그인</h2>
+    <form id="register-form">
+      <h2>Register</h2>
       <div class="input-field">
         <input type="text" id="username" required>
-        <label>아이디 입력</label>
+        <label>Enter your username</label>
+      </div>
+      <div class="input-field">
+        <input type="email" id="email">
+        <label>Enter your email (optional)</label>
+      </div>
+      <div class="input-field">
+        <input type="text" id="phoneNumber" required>
+        <label>Enter your phone number</label>
       </div>
       <div class="input-field">
         <input type="password" id="password" required>
-        <label>비밀번호 입력</label>
+        <label>Create a password</label>
       </div>
-      <div class="forget">
-        <label for="remember">
-          <input type="checkbox" id="remember">
-          <p>로그인 상태 유지</p>
-        </label>
-        <a href="forgot-password.html">비밀번호를 까먹으셨나요?</a>
+      <div class="input-field">
+        <input type="password" id="confirm-password" required>
+        <label>Confirm password</label>
       </div>
-      <button type="submit">로그인</button>
+      <button type="submit">Register</button>
       <div class="register">
-        <p>계정이 없으신가요? <a href="register.html">회원가입</a></p>
+        <p>Already have an account? <a href="login.html">Log In</a></p>
       </div>
     </form>
   </div>
 
   <script>
-    document.getElementById("login-form").addEventListener("submit", async function(event) {
+    document.getElementById("register-form").addEventListener("submit", async function(event) {
       event.preventDefault(); // 기본 폼 제출 방지
 
       const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const phoneNumber = document.getElementById("phoneNumber").value;
       const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
 
-      const response = await fetch("http://localhost:5000/auth/login", {
+      if (password !== confirmPassword) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+      }
+
+      const response = await fetch("http://localhost:5000/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username, email, phoneNumber, password })
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem("token", data.token); // JWT 토큰 저장
-        alert("로그인 성공!");
-        window.location.href = "index.html"; // 로그인 후 메인 페이지 이동
+        // 승인 대기 메시지를 sessionStorage에 저장
+        sessionStorage.setItem("approvalMessage", "회원가입 신청이 완료되었습니다! 관리자 승인 후 로그인 가능합니다.");
+        
+        // 로그인 페이지로 이동
+        window.location.href = "login.html";
       } else {
-        alert(data.message || "로그인 실패");
+        alert(data.message || "회원가입 실패");
       }
     });
   </script>
