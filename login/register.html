@@ -8,22 +8,22 @@
 </head>
 <body>
   <div class="wrapper">
-    <form action="#">
+    <form id="register-form">
       <h2>Register</h2>
       <div class="input-field">
-        <input type="text" required>
+        <input type="text" id="username" required>
         <label>Enter your username</label>
       </div>
       <div class="input-field">
-        <input type="email" required>
+        <input type="email" id="email" required>
         <label>Enter your email</label>
       </div>
       <div class="input-field">
-        <input type="password" required>
+        <input type="password" id="password" required>
         <label>Create a password</label>
       </div>
       <div class="input-field">
-        <input type="password" required>
+        <input type="password" id="confirm-password" required>
         <label>Confirm password</label>
       </div>
       <button type="submit">Register</button>
@@ -32,5 +32,36 @@
       </div>
     </form>
   </div>
+
+  <script>
+    document.getElementById("register-form").addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirm-password").value;
+
+      if (password !== confirmPassword) {
+        alert("비밀번호가 일치하지 않습니다.");
+        return;
+      }
+
+      const response = await fetch("http://localhost:5000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("회원가입 성공! 로그인 페이지로 이동합니다.");
+        window.location.href = "login.html";
+      } else {
+        alert(data.message || "회원가입 실패");
+      }
+    });
+  </script>
 </body>
 </html>
